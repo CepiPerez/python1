@@ -205,7 +205,7 @@ a {
     }
 
     .detalle_pelicula_fondo {
-        height: 206px;
+        height: 300px;
     }
 
     .detalle_pelicula_fondo::before {
@@ -213,11 +213,11 @@ a {
     }
 
     .detalle_pelicula_imagen {
-        height: 120px;
+        width: 180px;
     }
 
     .detalle_pelicula_texto {
-        margin-top: 5.25rem;
+        margin-top: 2rem;
         margin-left: 0;
         width: 100%;
     }
