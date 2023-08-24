@@ -105,7 +105,7 @@ a {
 .detalle_pelicula {
     display: flex;
     flex-wrap: wrap;
-    margin: 2rem 0;
+    margin: 2rem 0 1.5rem 0;
     position: relative;
     padding: 1rem;
 }
@@ -163,11 +163,21 @@ a {
     text-decoration: none;
     transition: all .6s ease;
     padding: .2rem 0;
-    font-size: 1rem;
+    font-size: .85rem;
 }
 
 .pelicula_detalle_video:hover {
     color: lightsteelblue;
+}
+
+.pelicula_trailer {
+    margin: 0 .5rem;
+}
+
+.pelicula_videos {
+    color: slategray;
+    flex-direction: column;
+    margin: 0 1rem;
 }
 
 .estudios {
@@ -184,9 +194,14 @@ a {
     margin: .5rem;
 }
 
+
 @media (max-width: 768px) {
     .botonera {
         flex-direction: column;
+    }
+
+    .detalle_pelicula {
+        margin: 2rem 0 0 0;
     }
 
     .detalle_pelicula_fondo {
@@ -194,7 +209,7 @@ a {
     }
 
     .detalle_pelicula_fondo::before {
-        opacity: 0.4;
+        opacity: 0.5;
     }
 
     .detalle_pelicula_imagen {
@@ -205,5 +220,13 @@ a {
         margin-top: 5.25rem;
         margin-left: 0;
         width: 100%;
+    }
+
+    .pelicula_trailer {
+        margin: 0 .5rem;
+    }
+    
+    .pelicula_videos {
+        margin: 0 1rem;
     }
 }

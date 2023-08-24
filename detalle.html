@@ -54,18 +54,20 @@
 
             <p id="duracion" style="font-size:.9rem"></p>
 
-            <div id="videos" style="display: none; flex-direction: column;">
-                <p style="margin: 1rem 0 .25rem;">Videos disponibles:</p>
-
-            </div>
-
-
         </div>
 
 
     </section>
 
-    <p style="color:gray;font-size:.8rem;margin:0 1rem;">Productoras:</p>
+    <div id="trailer" class="pelicula_trailer" style="display: none;">
+    </div>
+
+    <div id="videos" class="pelicula_videos" style="display: none;">
+        <p style="margin: 1rem 0 .25rem; font-size: .8rem;">Videos disponibles:</p>
+
+    </div>
+
+    <p style="color:gray;font-size:.8rem;margin:1.5rem 1rem 0;">Productoras:</p>
     <div id="estudios" class="estudios">            
     </div>
 
@@ -82,6 +84,7 @@
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const estudios = document.getElementById('estudios');
+        const trailer = document.getElementById('trailer');
         const listaVideos = document.getElementById('videos');
         const progress = document.getElementById('progress');
         const progressText = document.getElementById('progress_text');
@@ -149,24 +152,49 @@
 
 
         function agregarVideos(videos) {
+            //console.log(videos)
+
+            var trailerLoaded = false;
+            var cantidadVideos = 0;
+
+            videos.results.forEach(video => {
+                //console.log(video)
+                
+                if (video.site=='YouTube') {
+
+                    if (video.type=='Trailer' && !trailerLoaded) {
+                        var w = window.innerWidth;
+                        w = w > 650 ? 650 : w;
+                        w = w - (w < 768 ? 40 : 90); 
+
+                        var h = parseInt((w / 16) * 9); 
+                        console.log("WINDOW: ",w)
+
+                        var item = document.createElement('iframe');
+                        item.classList.add('pelicula_trailer');
+                        item.setAttribute('height', h);
+                        item.setAttribute('width', w);
+                        item.setAttribute('src', 'https://www.youtube.com/embed/' + video.key);
+
+                        trailer.appendChild(item);
+                        trailerLoaded = true;
+                        trailer.style.display = 'block';
+                    } else {
+                        var item = document.createElement('a');
+                        item.classList.add('pelicula_detalle_video');
+                        item.setAttribute('target', '_blank');
+                        item.setAttribute('href', 'https://www.youtube.com/watch?v=' + video.key);
+                        item.innerHTML = video.name;
+        
+                        listaVideos.appendChild(item);
+                        cantidadVideos++;
+                    }
+                }
+            });
+
             if (videos.results.length>0) {
                 listaVideos.style.display = 'flex';
             }
-
-            //console.log(videos)
-
-            videos.results.forEach(video => {
-                
-                if (video.site=='YouTube') {
-                    var item = document.createElement('a');
-                    item.classList.add('pelicula_detalle_video');
-                    item.setAttribute('target', '_blank');
-                    item.setAttribute('href', 'https://www.youtube.com/watch?v=' + video.key);
-                    item.innerHTML = video.name;
-    
-                    listaVideos.appendChild(item);
-                }
-            });
         }
 
 
