@@ -113,6 +113,7 @@ a {
 .detalle_pelicula_fondo {
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     position: absolute;
     top: 0;
     right: 0;
@@ -158,6 +159,20 @@ a {
     transition: all .3s ease;
 }
 
+.pelicula_detalle_produccion {
+    display: flex;
+    color: white;
+}
+
+.pelicula_detalle_produccion_item{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin: 1rem 3rem 0 0;
+}
+
+
+
 .pelicula_detalle_video {
     color: slateblue;
     text-decoration: none;
@@ -172,7 +187,7 @@ a {
 }
 
 .pelicula_trailer {
-    margin: 0 .5rem;
+    margin: 1rem .5rem;
 }
 
 .pelicula_videos {
@@ -217,6 +232,36 @@ a {
     margin: .5rem;
 }
 
+.pelicula_reparto {
+    display: flex;
+    flex-direction: column;
+}
+
+.pelicula_actor {
+    display: flex;
+    width: 100%;
+    margin: .25rem 1rem .25rem 0;
+}
+.pelicula_actor img {
+    height: 42px;
+    width: 42px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.pelicula_actor_detalle {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    color: white;
+}
+.pelicula_actor_detalle span {
+    color: slategray;
+    font-size: .8rem;
+    padding-top: 5px;
+}
+
+
 
 @media (max-width: 768px) {
     .botonera {
@@ -245,9 +290,9 @@ a {
         width: 100%;
     }
 
-    .pelicula_trailer {
+    /* .pelicula_trailer {
         margin: 0 .5rem;
-    }
+    } */
     
     .pelicula_videos {
         margin: 0 1rem;

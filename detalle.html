@@ -54,6 +54,10 @@
 
             <p id="duracion" style="font-size:.9rem"></p>
 
+            <div id="pelicula_detalle_produccion" class="pelicula_detalle_produccion">
+
+            </div>
+
         </div>
 
 
@@ -63,6 +67,12 @@
         
     </div>
 
+    <div id="reparto" style="display: none; margin: 0 1rem;">
+        <p style="margin: 1rem 0 .5rem; font-size: 1rem; color: slategray">Reparto:</p>
+        <div id="reparto_lista" class="pelicula_reparto" >
+
+        </div>
+    </div>
 
     <div id="trailer" class="pelicula_trailer" style="display: none;">
     </div>
@@ -77,7 +87,6 @@
     </div>
 
 
-
     <!-- JAVASCRIPT -->
 
     <script>
@@ -90,7 +99,10 @@
         const estudios = document.getElementById('estudios');
         const estudiosTitulo = document.getElementById('estudios_titulo');
         const coleccion = document.getElementById('coleccion');
-
+        const reparto = document.getElementById('reparto');
+        const listaReparto = document.getElementById('reparto_lista');
+        const produccion = document.getElementById('pelicula_detalle_produccion');
+        
         // Parámetros para la API
         const options = {
             method: 'GET',
@@ -101,7 +113,8 @@
         };
 
         // Llamamos a la API para obtener el detalle de la película
-        // También hacemos una segunda llamada para obtener la lista de videos de la misma
+        // Hacemos una segunda llamada para obtener la lista de videos de la misma
+        // Hacemos una tercer llamada para obtener los actores y equipo
         function cargarDetalle(id) {
             fetch('https://api.themoviedb.org/3/movie/' + params.id + '?language=es-AR', options)
                 .then(response => response.json())
@@ -112,11 +125,17 @@
                 .then(response => response.json())
                 .then(response => agregarVideos(response))
                 .catch(err => console.error(err));
+
+            fetch('https://api.themoviedb.org/3/movie/' + params.id + '/credits?language=es-AR', options)
+                .then(response => response.json())
+                .then(response => generarReparto(response))
+                .catch(err => console.error(err));
         }
         
         
         // Cargamos los datos de la película que devolvió la API
         function generarDetalle(detalle) {
+            console.log(detalle)
 
             // Agregamos el fondo usando CSS (background_image) al elemento
             agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + (detalle.backdrop_path ? detalle.backdrop_path : detalle.poster_path));
@@ -223,7 +242,6 @@
                         w = w - (w < 768 ? 40 : 90); 
 
                         var h = parseInt((w / 16) * 9); 
-                        console.log("WINDOW: ",w)
 
                         var item = document.createElement('iframe');
                         item.classList.add('pelicula_trailer');
@@ -256,6 +274,65 @@
                 listaVideos.style.display = 'flex';
             }
         }
+
+        // Esta funcion genera la lista de protagonistas
+        // Tambien buscamos el director y escritor (ya que son importantes)
+        function generarReparto(datos) {
+
+            var actores = datos.cast;
+            var personal = datos.crew;
+
+            // Primero los actores
+            // Usamos un contador para mostrar solamente los primeros 5
+            var contador = 0;
+            actores.some(function(actor) {
+                //console.log(actor.name)
+
+                var item = document.createElement('div');
+                item.innerHTML = `
+                    <div class="pelicula_actor">
+                        <img style="background-image:url('https://image.tmdb.org/t/p/w200/` + actor.profile_path + `')" alt="">
+                        <div class="pelicula_actor_detalle">
+                            <div>` + actor.name + `</div><span>` + actor.character + `</span>
+                        </div>
+                    </div>
+                `;
+                listaReparto.appendChild(item);
+
+                contador++;
+                return contador==5;
+            });
+
+            if (contador>0) {
+                reparto.style.display = 'block';
+            }
+
+
+            // Ahora buscamos directores y escritores
+            var datos = {};
+            personal.forEach(persona => {
+                if (persona.job=='Director') {
+                    datos[persona.name] = datos[persona.name]? datos[persona.name] + ', ' + persona.job : persona.job;
+                } else if (persona.job=='Writer') {
+                    datos[persona.name] = datos[persona.name]? datos[persona.name] + ', ' + persona.job : persona.job;
+                }
+            });
+
+            for (var key in datos) {
+                var value = datos[key];
+
+                var item = document.createElement('div');
+                item.classList.add('pelicula_detalle_produccion_item');
+                item.innerHTML = `
+                    <span style="font-weight:600;">` + key + `</span>
+                    <span>` + value + `</span>
+                `;
+
+                produccion.appendChild(item);
+            }
+
+        }
+
 
         // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
         function cleanPath(path) {
