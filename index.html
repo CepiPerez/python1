@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Fans</title>
+
+    <link rel="stylesheet" href="assets/app.css">
+
+
+</head>
+<body>
+
+    <h1>Bienvenido</h1>
+    <!-- <hr> -->
+
+    <div class="botonera" id="botonera">
+        <span class="botonera_item active" id="now_playing" onclick="cambiarListado('now_playing')">En cartelera</span>
+        <span class="botonera_item" id="popular" onclick="cambiarListado('popular')">Populares</span>
+        <span class="botonera_item" id="top_rated" onclick="cambiarListado('top_rated')">Mejor calificadas</span>
+        <span class="botonera_item" id="upcoming" onclick="cambiarListado('upcoming')">Próximos estrenos</span>
+    </div>
+
+
+    <section class="peliculas_listado" id="listado">
+        <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
+    
+
+
+
+        
+    </section>
+
+
+
+
+    <script>
+        const main = document.getElementById('listado');
+        const botonera = document.getElementById('botonera');
+
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
+            }
+        };
+
+        function leerAPI(seleccion) {
+            fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1&region=AR', options)
+                .then(response => response.json())
+                .then(response => generarListado(response.results))
+                .catch(err => console.error(err));
+        }
+
+        function cleanPath(path) {
+            return path.replace('/', '').replace('.jpg', '');
+        }
+
+
+        function generarListado(peliculas) {
+            peliculas.forEach(pelicula => {
+                console.log(pelicula)
+                
+                var peli = document.createElement('a');
+                peli.classList.add('pelicula_caja');
+                peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
+                
+                peli.innerHTML = `
+                <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
+                <p class="pelicula_titulo">` + pelicula.title + `</p>`;
+
+                if (pelicula.vote_average !== 0) {
+                    peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
+                    `<span style="font-size:.45rem;">%</span></span>`;
+                }
+
+                main.appendChild(peli);
+
+            });
+        }
+
+        function cambiarListado(seleccion) {
+            
+            main.innerHTML = '';
+
+            for (boton of botonera.children) {
+                if (boton.getAttribute('id') == seleccion) {
+                    boton.classList.add('active')
+                } else {
+                    boton.classList.remove('active')
+                }
+            }
+
+
+            leerAPI(seleccion);
+        }
+
+        
+
+        cambiarListado('now_playing');
+
+    </script>
+
+</body>
+</html>

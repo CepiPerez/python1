@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Fans</title>
+
+    <link rel="stylesheet" href="assets/app.css">
+    <link rel="stylesheet" href="assets/progress-circle.css">
+
+</head>
+<body>
+
+    <h1>Detalle de la película</h1>
+    <hr>
+
+    <section class="detalle_pelicula">
+
+        <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
+
+
+        <div class="detalle_pelicula_imagen">
+            <img id="poster" class="pelicula_poster_grande" src="" alt="">
+
+        </div>
+
+        <div class="detalle_pelicula_texto">
+            <h2 id="titulo" style="margin:0;color:white"></h2>
+            
+            <p id="titulo_traducido" style="margin:.75rem 0;font-size:.9rem"></p>
+    
+            <div style="display:flex;">
+                <div>
+                    <div id="progress" class="progress-circle">
+                        <span id="progress_text">SC</span>
+                        <div class="left-half-clipper">
+                            <div class="first50-bar"></div>
+                            <div class="value-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin: .15rem 1.5rem">
+                    <p id="fecha" style="font-size:.8rem;"></p>
+                    <p id="genero" style="font-size:.8rem;font-weight:600;"></p>
+                </div>
+            </div>
+
+            <i id="tag" style="opacity: .7;"></i>
+
+            <p style="font-size:1.15rem;font-weight:500;margin-bottom:0;">Vista general</p>
+            <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
+    
+            <p id="calificacion" style="font-size:.9rem"></p>
+
+            <p id="duracion" style="font-size:.9rem"></p>
+
+            <div id="videos" style="display: none; flex-direction: column;">
+                <p style="margin: 1rem 0 .25rem;">Videos disponibles:</p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+    <p style="color:gray;font-size:.8rem;margin:0 1rem;">Productoras:</p>
+    <div id="estudios" class="estudios">            
+    </div>
+
+    <script>
+        
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
+            }
+        };
+
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        const estudios = document.getElementById('estudios');
+        const listaVideos = document.getElementById('videos');
+        const progress = document.getElementById('progress');
+        const progressText = document.getElementById('progress_text');
+
+        function cargarDetalle(id) {
+            fetch('https://api.themoviedb.org/3/movie/' + params.id + '?language=es-AR&region=AR', options)
+                .then(response => response.json())
+                .then(response => generarDetalle(response))
+                .catch(err => console.error(err));
+
+            fetch('https://api.themoviedb.org/3/movie/' + params.id + '/videos?language=es-AR&region=AR', options)
+                .then(response => response.json())
+                .then(response => agregarVideos(response))
+                .catch(err => console.error(err));
+        }
+
+
+        function generarDetalle(detalle) {
+            console.log(detalle)
+
+            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + detalle.backdrop_path);
+            
+            agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
+
+            agregarTexto('titulo', detalle.original_title 
+                + '<span style="font-weight:100;margin-left:.5rem;opacity:.7;">(' 
+                + detalle.release_date.substring(0, 4) + ')</span>');
+
+            // Si el nombre original es igual que el traducido no se muestra
+            if (detalle.original_title != detalle.title) {
+                agregarTexto('titulo_traducido', detalle.title);
+            }
+
+            var porcentaje = parseInt(parseFloat(detalle.vote_average).toFixed(1) * 10);
+
+            if (porcentaje > 0) {
+                progressText.innerHTML = porcentaje + '<i>%</i>';
+                progress.classList.add('p' + porcentaje);
+
+                if (porcentaje >= 50) {
+                    progress.classList.add('over50');
+                }
+            }
+
+            agregarTexto('fecha', 'Lanzamiento: <b>' + convertirFecha(detalle.release_date) + '</b>');
+            agregarTexto('genero', juntarGeneros(detalle.genres));
+            agregarTexto('tag', detalle.tagline);
+            agregarTexto('sinopsis', detalle.overview);
+            agregarTexto('calificacion', 'Calificación: <b>' + detalle.vote_average.toFixed(2) + '</b>');
+            
+            var hours = Math.floor(detalle.runtime / 60);          
+            var minutes = detalle.runtime % 60;
+            agregarTexto('duracion', 'Duración: <b>' + hours + 'h ' + minutes + 'm</b>');
+            
+            detalle.production_companies.forEach(estudio => {
+                if (estudio.logo_path) {
+                    var item = document.createElement('img');
+                    item.setAttribute('src', 'https://image.tmdb.org/t/p/w200/' + estudio.logo_path);
+    
+                    estudios.appendChild(item);
+                }
+            });
+
+        }
+
+
+        function agregarVideos(videos) {
+            if (videos.results.length>0) {
+                listaVideos.style.display = 'flex';
+            }
+
+            //console.log(videos)
+
+            videos.results.forEach(video => {
+                
+                if (video.site=='YouTube') {
+                    var item = document.createElement('a');
+                    item.classList.add('pelicula_detalle_video');
+                    item.setAttribute('target', '_blank');
+                    item.setAttribute('href', 'https://www.youtube.com/watch?v=' + video.key);
+                    item.innerHTML = video.name;
+    
+                    listaVideos.appendChild(item);
+                }
+            });
+        }
+
+
+        function agregarFondo(id, value) {
+            document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
+        }
+
+        function agregarAtributo(id, attr, value) {
+            document.getElementById(id).setAttribute(attr, value);
+        }
+
+        function agregarTexto(id, value) {
+            document.getElementById(id).innerHTML = value;
+        }
+
+        function juntarGeneros(generos) {
+            var resultado = [];
+            
+            generos.forEach(genero => {
+                resultado.push(genero.name);
+            });
+
+            return resultado.join(' - '); 
+        }
+
+        function convertirFecha(fecha) {
+            return fecha.substring(8, 10) + '-' + fecha.substring(5, 7) + '-' + fecha.substring(0, 4);
+        }
+
+
+        cargarDetalle(params.id);
+
+
+    </script>
+
+    <!-- <script src="assets/progress-circle.js"></script> -->
+
+
+</body>
+</html>
