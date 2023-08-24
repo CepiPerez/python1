@@ -12,8 +12,8 @@
 <body>
 
     <h1>Bienvenido</h1>
-    <!-- <hr> -->
 
+    <!-- BOTONERA -->
     <div class="botonera" id="botonera">
         <span class="botonera_item active" id="now_playing" onclick="cambiarListado('now_playing')">En cartelera</span>
         <span class="botonera_item" id="popular" onclick="cambiarListado('popular')">Populares</span>
@@ -25,19 +25,17 @@
     <section class="peliculas_listado" id="listado">
         <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
     
-
-
-
-        
     </section>
 
 
 
+    <!-- JAVASCRIPT -->
 
     <script>
         const main = document.getElementById('listado');
         const botonera = document.getElementById('botonera');
 
+        // Parámetros para la API
         const options = {
             method: 'GET',
             headers: {
@@ -46,6 +44,7 @@
             }
         };
 
+        // Llamamos a la API para obtener la lista de películas
         function leerAPI(seleccion) {
             fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1&region=AR', options)
                 .then(response => response.json())
@@ -53,11 +52,8 @@
                 .catch(err => console.error(err));
         }
 
-        function cleanPath(path) {
-            return path.replace('/', '').replace('.jpg', '');
-        }
-
-
+        // Esta funcion genera la lista de películas
+        // que devolvió la API y las agrega al HTML
         function generarListado(peliculas) {
             peliculas.forEach(pelicula => {
                 console.log(pelicula)
@@ -70,6 +66,7 @@
                 <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
                 <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
 
+                // Si la película tiene calificación la mostramos
                 if (pelicula.vote_average !== 0) {
                     peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
                     `<span style="font-size:.45rem;">%</span></span>`;
@@ -80,6 +77,8 @@
             });
         }
 
+        // Esta funcion limpia la lista acual de películas
+        // Luego llama a la API para cargar la lista nueva
         function cambiarListado(seleccion) {
             
             main.innerHTML = '';
@@ -92,11 +91,13 @@
                 }
             }
 
-
             leerAPI(seleccion);
         }
 
-        
+        // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
+        function cleanPath(path) {
+            return path.replace('/', '').replace('.jpg', '');
+        }
 
         cambiarListado('now_playing');
 

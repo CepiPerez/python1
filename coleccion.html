@@ -37,23 +37,21 @@
 
     <div class="peliculas_listado" id="listado">
         <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
-    
-
-
-
-        
+            
     </div>
 
 
 
-
+    <!-- JAVASCRIPT -->
+    
     <script>
+        // Conseguimos los parámetros de la query (en la url)
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
 
         const listado = document.getElementById('listado');
 
-        
+        // Parámetros para la API
         const options = {
             method: 'GET',
             headers: {
@@ -62,30 +60,32 @@
             }
         };
 
+        // Llamamos a la API para obtener la colección
         function leerAPI(seleccion) {
             fetch('https://api.themoviedb.org/3/collection/' + seleccion + '?language=es_ar&region=AR', options)
                 .then(response => response.json())
-                .then(response => generarListado(response))
+                .then(response => cargarColeccion(response))
                 .catch(err => console.error(err));
         }
 
-        function cleanPath(path) {
-            return path.replace('/', '').replace('.jpg', '');
-        }
 
-
-        function generarListado(coleccion) {
+        // Cargamos la colección
+        function cargarColeccion(coleccion) {
             console.log(coleccion);
 
+            // Agregamos el fondo usando CSS (background_image) al elemento
             agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + coleccion.backdrop_path);
 
+            // Agregamos la imagen del póster usando el atributo "src" de la etiqueta "img"
             agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
 
+            // Agregamos el título
             agregarTexto('titulo', coleccion.name);
 
+            // Agregamos la descripción
             agregarTexto('sinopsis', coleccion.overview);
 
-
+            // Agregamos las películas de la colección al listado HTML
             coleccion.parts.forEach(pelicula => {
                 console.log(pelicula)
                 
@@ -97,6 +97,7 @@
                 <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
                 <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
 
+                // Si la película tiene calificación la mostramos
                 if (pelicula.vote_average !== 0) {
                     peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
                     `<span style="font-size:.45rem;">%</span></span>`;
@@ -107,14 +108,23 @@
             });
         }
 
+
+        // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
+        function cleanPath(path) {
+            return path.replace('/', '').replace('.jpg', '');
+        }
+
+        // Esta funcion agraga un fondo al CSS de un elemento
         function agregarFondo(id, value) {
             document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
         }
 
+        // Esta funcion agraga un atributo a un elemento
         function agregarAtributo(id, attr, value) {
             document.getElementById(id).setAttribute(attr, value);
         }
 
+        // Esta funcion agraga el texto directamente al elemento
         function agregarTexto(id, value) {
             document.getElementById(id).innerHTML = value;
         }

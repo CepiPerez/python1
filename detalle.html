@@ -78,19 +78,9 @@
 
 
 
-
-
+    <!-- JAVASCRIPT -->
 
     <script>
-        
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
-            }
-        };
-
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const trailer = document.getElementById('trailer');
@@ -101,6 +91,17 @@
         const estudiosTitulo = document.getElementById('estudios_titulo');
         const coleccion = document.getElementById('coleccion');
 
+        // Parámetros para la API
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
+            }
+        };
+
+        // Llamamos a la API para obtener el detalle de la película
+        // También hacemos una segunda llamada para obtener la lista de videos de la misma
         function cargarDetalle(id) {
             fetch('https://api.themoviedb.org/3/movie/' + params.id + '?language=es-AR', options)
                 .then(response => response.json())
@@ -112,24 +113,30 @@
                 .then(response => agregarVideos(response))
                 .catch(err => console.error(err));
         }
-
-
+        
+        
+        // Cargamos los datos de la película que devolvió la API
         function generarDetalle(detalle) {
-            console.log(detalle)
 
-            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + detalle.backdrop_path);
+            // Agregamos el fondo usando CSS (background_image) al elemento
+            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + (detalle.backdrop_path ? detalle.backdrop_path : detalle.poster_path));
             
+            // Agregamos la imagen del póster usando el atributo "src" de la etiqueta "img"
             agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
 
+            // Agregamos el título, incluyendo el año de la pelicula
             agregarTexto('titulo', detalle.original_title 
                 + '<span style="font-weight:100;margin-left:.5rem;opacity:.7;">(' 
                 + detalle.release_date.substring(0, 4) + ')</span>');
 
-            // Si el nombre original es igual que el traducido no se muestra
+            // Si el nombre original es distinto que el nombre traducido lo mostramos
+            // (para evitar mostrar dos titulos iguales)
             if (detalle.original_title != detalle.title) {
                 agregarTexto('titulo_traducido', detalle.title);
             }
 
+            // Calculamos el porcentaje de calificación de la película
+            // y lo mostramos con una barra circular 
             var porcentaje = parseInt(parseFloat(detalle.vote_average).toFixed(1) * 10);
 
             if (porcentaje > 0) {
@@ -141,18 +148,30 @@
                 }
             }
 
+            // Agregamos la fecha de lanzamiento, convertida al formato local
             agregarTexto('fecha', 'Lanzamiento: <b>' + convertirFecha(detalle.release_date) + '</b>');
+            
+            // Agregamos la lista de generos unificada en un string
             agregarTexto('genero', juntarGeneros(detalle.genres));
+            
+            // Agregamos el tag de la película
             agregarTexto('tag', detalle.tagline);
+            
+            // Agregamos la descripción
             agregarTexto('sinopsis', detalle.overview);
+            
+            // Agregamos la calificación en formato decimal (2 digitos)
             agregarTexto('calificacion', 'Calificación: <b>' + detalle.vote_average.toFixed(2) + '</b>');
             
+            // Calculamos la duración y la mostramos
+            // La API devuelve en minutos, así que la cambiamos a hora/minutos 
             var hours = Math.floor(detalle.runtime / 60);          
             var minutes = detalle.runtime % 60;
             agregarTexto('duracion', 'Duración: <b>' + hours + 'h ' + minutes + 'm</b>');
             
-
-
+            // Si la película pertenece a una colección (saga)
+            // mostramos una sección con el póster y el nombre 
+            // para que se pueda acceder a la misma
             if (detalle.belongs_to_collection) {
                 coleccion.innerHTML = `
                     <img src="https://image.tmdb.org/t/p/w200/` + detalle.belongs_to_collection.poster_path 
@@ -167,8 +186,7 @@
                 coleccion.style.display = 'flex';
             }
 
-
-
+            // Agregamos una lista de las productoras
             detalle.production_companies.forEach(estudio => {
                 if (estudio.logo_path) {
                     var item = document.createElement('img');
@@ -177,7 +195,6 @@
                     estudios.appendChild(item);
                 }
             });
-
             if (estudios.childElementCount > 0) {
                 estudiosTitulo.style.display = 'block';
                 estudios.style.display = 'flex';
@@ -186,17 +203,20 @@
         }
 
 
+        // Cargamos los datos de los videos disponibles que devolvió la API
         function agregarVideos(videos) {
-            //console.log(videos)
 
             var trailerLoaded = false;
             var cantidadVideos = 0;
 
             videos.results.forEach(video => {
-                //console.log(video)
                 
+                // Por ahora solamente si son de youtube
+                // (si hay de otra plataforma hay que implementar la generación del link)
                 if (video.site=='YouTube') {
 
+                    // Si el vídeo es de tipo "Trailer" mostramos directamente un reproductor
+                    // Solamente se muestra el primero (si hay varios se omite el resto)
                     if (video.type=='Trailer' && !trailerLoaded) {
                         var w = window.innerWidth;
                         w = w > 650 ? 650 : w;
@@ -214,7 +234,10 @@
                         trailer.appendChild(item);
                         trailerLoaded = true;
                         trailer.style.display = 'block';
-                    } else {
+                    }
+                    // Si el video no es de tipo "Trailer" se agrega a una lista
+                    // Solamente se agregan los primeros 5 (para evitar una lista larga)
+                    else {
                         var item = document.createElement('a');
                         item.classList.add('pelicula_detalle_video');
                         item.setAttribute('target', '_blank');
@@ -234,22 +257,27 @@
             }
         }
 
+        // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
         function cleanPath(path) {
             return path.replace('/', '').replace('.jpg', '');
         }
 
+        // Esta funcion agraga un fondo al CSS de un elemento
         function agregarFondo(id, value) {
             document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
         }
 
+        // Esta funcion agraga un atributo a un elemento
         function agregarAtributo(id, attr, value) {
             document.getElementById(id).setAttribute(attr, value);
         }
 
+        // Esta funcion agraga el texto directamente al elemento
         function agregarTexto(id, value) {
             document.getElementById(id).innerHTML = value;
         }
 
+        // Esta funcion busca los géneros en un array y los une en un string
         function juntarGeneros(generos) {
             var resultado = [];
             
@@ -260,6 +288,7 @@
             return resultado.join(' - '); 
         }
 
+        // Esta funcion convierte una fecha al formato local (2023-05-25 a 25-05-2023)
         function convertirFecha(fecha) {
             return fecha.substring(8, 10) + '-' + fecha.substring(5, 7) + '-' + fecha.substring(0, 4);
         }
