@@ -11,33 +11,49 @@
 </head>
 <body>
 
-    <h1>Bienvenido</h1>
-    <!-- <hr> -->
+    <h1>Detalle de colección</h1>
+    <hr>
 
-    <div class="botonera" id="botonera">
-        <span class="botonera_item active" id="now_playing" onclick="cambiarListado('now_playing')">En cartelera</span>
-        <span class="botonera_item" id="popular" onclick="cambiarListado('popular')">Populares</span>
-        <span class="botonera_item" id="top_rated" onclick="cambiarListado('top_rated')">Mejor calificadas</span>
-        <span class="botonera_item" id="upcoming" onclick="cambiarListado('upcoming')">Próximos estrenos</span>
-    </div>
+    <section class="detalle_pelicula">
+
+        <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
 
 
-    <section class="peliculas_listado" id="listado">
+        <div class="detalle_pelicula_imagen">
+            <img id="poster" class="pelicula_poster_grande" src="" alt="">
+
+        </div>
+
+        <div class="detalle_pelicula_texto">
+            <h2 id="titulo" style="margin:0;color:white"></h2>
+            <br>
+            <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
+
+        </div>
+
+
+    </section>
+
+
+    <div class="peliculas_listado" id="listado">
         <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
     
 
 
 
         
-    </section>
+    </div>
 
 
 
 
     <script>
-        const main = document.getElementById('listado');
-        const botonera = document.getElementById('botonera');
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
 
+        const listado = document.getElementById('listado');
+
+        
         const options = {
             method: 'GET',
             headers: {
@@ -47,9 +63,9 @@
         };
 
         function leerAPI(seleccion) {
-            fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1&region=AR', options)
+            fetch('https://api.themoviedb.org/3/collection/' + seleccion + '?language=es_ar&region=AR', options)
                 .then(response => response.json())
-                .then(response => generarListado(response.results))
+                .then(response => generarListado(response))
                 .catch(err => console.error(err));
         }
 
@@ -58,8 +74,19 @@
         }
 
 
-        function generarListado(peliculas) {
-            peliculas.forEach(pelicula => {
+        function generarListado(coleccion) {
+            console.log(coleccion);
+
+            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + coleccion.backdrop_path);
+
+            agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
+
+            agregarTexto('titulo', coleccion.name);
+
+            agregarTexto('sinopsis', coleccion.overview);
+
+
+            coleccion.parts.forEach(pelicula => {
                 console.log(pelicula)
                 
                 var peli = document.createElement('a');
@@ -75,31 +102,25 @@
                     `<span style="font-size:.45rem;">%</span></span>`;
                 }
 
-                main.appendChild(peli);
+                listado.appendChild(peli);
 
             });
         }
 
-        function cambiarListado(seleccion) {
-            
-            main.innerHTML = '';
-
-            for (boton of botonera.children) {
-                if (boton.getAttribute('id') == seleccion) {
-                    boton.classList.add('active')
-                } else {
-                    boton.classList.remove('active')
-                }
-            }
-
-
-            leerAPI(seleccion);
+        function agregarFondo(id, value) {
+            document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
         }
 
+        function agregarAtributo(id, attr, value) {
+            document.getElementById(id).setAttribute(attr, value);
+        }
+
+        function agregarTexto(id, value) {
+            document.getElementById(id).innerHTML = value;
+        }
+
+        leerAPI(params.id);
         
-
-        cambiarListado('now_playing');
-
     </script>
 
 </body>

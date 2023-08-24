@@ -164,6 +164,7 @@ a {
     transition: all .6s ease;
     padding: .2rem 0;
     font-size: .85rem;
+    width: fit-content;
 }
 
 .pelicula_detalle_video:hover {
@@ -178,6 +179,28 @@ a {
     color: slategray;
     flex-direction: column;
     margin: 0 1rem;
+}
+
+.pelicula_coleccion {
+    display: flex;
+    color: slategray;
+    flex-wrap: nowrap;
+    margin: 0 1rem 1.5rem;
+    background-color: #1d1d1d;
+    border-radius: .5rem;
+    padding: 1rem;
+}
+.pelicula_coleccion img {
+    border-radius: .5rem;
+    margin-right: 1rem;
+}
+.pelicula_coleccion a {
+    color: #a2b3c4;
+    transition: all .6s ease;
+    font-weight: 600;
+}
+.pelicula_coleccion a:hover {
+    color: #cbdcec;
 }
 
 .estudios {

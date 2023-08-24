@@ -59,6 +59,11 @@
 
     </section>
 
+    <div id="coleccion" class="pelicula_coleccion" style="display: none;">
+        
+    </div>
+
+
     <div id="trailer" class="pelicula_trailer" style="display: none;">
     </div>
 
@@ -67,9 +72,14 @@
 
     </div>
 
-    <p style="color:gray;font-size:.8rem;margin:1.5rem 1rem 0;">Productoras:</p>
-    <div id="estudios" class="estudios">            
+    <p id="estudios_titulo" style="color:gray;font-size:.8rem;margin:1.5rem 1rem 0;display: none;">Productoras:</p>
+    <div id="estudios" class="estudios" style="display: none;">            
     </div>
+
+
+
+
+
 
     <script>
         
@@ -83,19 +93,21 @@
 
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
-        const estudios = document.getElementById('estudios');
         const trailer = document.getElementById('trailer');
         const listaVideos = document.getElementById('videos');
         const progress = document.getElementById('progress');
         const progressText = document.getElementById('progress_text');
+        const estudios = document.getElementById('estudios');
+        const estudiosTitulo = document.getElementById('estudios_titulo');
+        const coleccion = document.getElementById('coleccion');
 
         function cargarDetalle(id) {
-            fetch('https://api.themoviedb.org/3/movie/' + params.id + '?language=es-AR&region=AR', options)
+            fetch('https://api.themoviedb.org/3/movie/' + params.id + '?language=es-AR', options)
                 .then(response => response.json())
                 .then(response => generarDetalle(response))
                 .catch(err => console.error(err));
 
-            fetch('https://api.themoviedb.org/3/movie/' + params.id + '/videos?language=es-AR&region=AR', options)
+            fetch('https://api.themoviedb.org/3/movie/' + params.id + '/videos?language=es-AR', options)
                 .then(response => response.json())
                 .then(response => agregarVideos(response))
                 .catch(err => console.error(err));
@@ -139,6 +151,24 @@
             var minutes = detalle.runtime % 60;
             agregarTexto('duracion', 'Duración: <b>' + hours + 'h ' + minutes + 'm</b>');
             
+
+
+            if (detalle.belongs_to_collection) {
+                coleccion.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w200/` + detalle.belongs_to_collection.poster_path 
+                    + `" alt="" height="180px" width="auto">
+                    <div>
+                    <p>Esta película es parte de</p>
+                    <a href="coleccion.html?id=` + detalle.belongs_to_collection.id 
+                    + `&path=` + cleanPath(detalle.belongs_to_collection.poster_path)
+                    + `">` + detalle.belongs_to_collection.name + `</a>
+                    </div>`;
+
+                coleccion.style.display = 'flex';
+            }
+
+
+
             detalle.production_companies.forEach(estudio => {
                 if (estudio.logo_path) {
                     var item = document.createElement('img');
@@ -147,6 +177,11 @@
                     estudios.appendChild(item);
                 }
             });
+
+            if (estudios.childElementCount > 0) {
+                estudiosTitulo.style.display = 'block';
+                estudios.style.display = 'flex';
+            }
 
         }
 
@@ -186,8 +221,10 @@
                         item.setAttribute('href', 'https://www.youtube.com/watch?v=' + video.key);
                         item.innerHTML = video.name;
         
-                        listaVideos.appendChild(item);
-                        cantidadVideos++;
+                        if (listaVideos.childElementCount < 6) {
+                            listaVideos.appendChild(item);
+                            cantidadVideos++;
+                        }
                     }
                 }
             });
@@ -197,6 +234,9 @@
             }
         }
 
+        function cleanPath(path) {
+            return path.replace('/', '').replace('.jpg', '');
+        }
 
         function agregarFondo(id, value) {
             document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
