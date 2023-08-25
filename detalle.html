@@ -50,7 +50,7 @@
             <p style="font-size:1.15rem;font-weight:500;margin-bottom:0;">Vista general</p>
             <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
     
-            <p id="calificacion" style="font-size:.9rem"></p>
+            <p id="calificacion" style="font-size:.9rem;margin-top:2rem;"></p>
 
             <p id="duracion" style="font-size:.9rem"></p>
 
@@ -138,7 +138,8 @@
             console.log(detalle)
 
             // Agregamos el fondo usando CSS (background_image) al elemento
-            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + (detalle.backdrop_path ? detalle.backdrop_path : detalle.poster_path));
+            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + 
+                (detalle.backdrop_path ? detalle.backdrop_path : detalle.poster_path));
             
             // Agregamos la imagen del póster usando el atributo "src" de la etiqueta "img"
             agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
@@ -165,6 +166,15 @@
                 if (porcentaje >= 50) {
                     progress.classList.add('over50');
                 }
+
+                // Cambiamos el color según el porcentaje
+                if (porcentaje >= 70) {
+                    cambiarColor('#23cf23');
+                } else if (porcentaje >= 40) {
+                    cambiarColor('orange');
+                } else if (porcentaje > 0) {
+                    cambiarColor('red');
+                }
             }
 
             // Agregamos la fecha de lanzamiento, convertida al formato local
@@ -177,16 +187,17 @@
             agregarTexto('tag', detalle.tagline);
             
             // Agregamos la descripción
-            agregarTexto('sinopsis', detalle.overview);
+            agregarTexto('sinopsis', detalle.overview ? detalle.overview : 'No hay una descripción disponible para esta película.');
             
             // Agregamos la calificación en formato decimal (2 digitos)
-            agregarTexto('calificacion', 'Calificación: <b>' + detalle.vote_average.toFixed(2) + '</b>');
+            agregarTexto('calificacion', 'Calificación: <b>' 
+                + (detalle.vote_average > 0 ? detalle.vote_average.toFixed(2) : 'Sin Calificar') + '</b>');
             
             // Calculamos la duración y la mostramos
             // La API devuelve en minutos, así que la cambiamos a hora/minutos 
             var hours = Math.floor(detalle.runtime / 60);          
             var minutes = detalle.runtime % 60;
-            agregarTexto('duracion', 'Duración: <b>' + hours + 'h ' + minutes + 'm</b>');
+            agregarTexto('duracion', 'Duración: <b>' + (hours > 0 ? hours + 'h ' : ' ') + minutes + 'm</b>');
             
             // Si la película pertenece a una colección (saga)
             // mostramos una sección con el póster y el nombre 
@@ -289,14 +300,20 @@
                 //console.log(actor.name)
 
                 var item = document.createElement('div');
-                item.innerHTML = `
-                    <div class="pelicula_actor">
-                        <img style="background-image:url('https://image.tmdb.org/t/p/w200/` + actor.profile_path + `')" alt="">
-                        <div class="pelicula_actor_detalle">
+
+                text = `<div class="pelicula_actor">` 
+                    + (actor.profile_path ? 
+                        `<div class="image" style="background-image:url('https://image.tmdb.org/t/p/w200/` 
+                        + actor.profile_path + `')"></div>`
+                    : '')
+                    + `<div class="pelicula_actor_detalle"`
+                    + (actor.profile_path ? '' : 'style="margin-left:0;"') + `>
                             <div>` + actor.name + `</div><span>` + actor.character + `</span>
                         </div>
-                    </div>
-                `;
+                    </div>`;
+                
+                item.innerHTML = text;
+
                 listaReparto.appendChild(item);
 
                 contador++;
@@ -325,7 +342,7 @@
                 item.classList.add('pelicula_detalle_produccion_item');
                 item.innerHTML = `
                     <span style="font-weight:600;">` + key + `</span>
-                    <span>` + value + `</span>
+                    <span style="opacity: .7;">` + value + `</span>
                 `;
 
                 produccion.appendChild(item);
@@ -333,6 +350,12 @@
 
         }
 
+
+        // Esta funcion cambia el color de la calificacion
+        function cambiarColor(color) {
+            document.getElementsByClassName('value-bar')[0].style.borderColor = color;
+            document.getElementsByClassName('first50-bar')[0].style.backgroundColor = color;
+        }
 
         // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
         function cleanPath(path) {
@@ -355,7 +378,13 @@
         }
 
         // Esta funcion busca los géneros en un array y los une en un string
+        // Si la API no devuelve generos retornamos "no clasificada"
         function juntarGeneros(generos) {
+
+            if (generos.length==0) {
+                return 'No clasificada';
+            }
+
             var resultado = [];
             
             generos.forEach(genero => {

@@ -138,6 +138,11 @@ a {
     z-index: 1;
 }
 
+.detalle_pelicula_imagen.coleccion {
+    width: 200px;
+}
+
+
 .detalle_pelicula_texto {
     width: calc(70% - 3rem);
     color: rgb(255, 255, 255);
@@ -169,8 +174,9 @@ a {
     flex-direction: column;
     color: white;
     margin: 1rem 3rem 0 0;
+    font-size: .9rem;
+    line-height: 1.45rem;
 }
-
 
 
 .pelicula_detalle_video {
@@ -242,17 +248,18 @@ a {
     width: 100%;
     margin: .25rem 1rem .25rem 0;
 }
-.pelicula_actor img {
-    height: 42px;
+.pelicula_actor .image {
+    height: 50px;
     width: 42px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: .5rem;
 }
 .pelicula_actor_detalle {
     display: flex;
     flex-direction: column;
-    margin-left: 1rem;
+    margin: .35rem 1rem 0;
     color: white;
 }
 .pelicula_actor_detalle span {
@@ -293,6 +300,10 @@ a {
     /* .pelicula_trailer {
         margin: 0 .5rem;
     } */
+    
+    .pelicula_detalle_produccion_item{
+        margin: 0 3rem 0 0;
+    }
     
     .pelicula_videos {
         margin: 0 1rem;
