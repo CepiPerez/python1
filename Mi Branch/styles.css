@@ -1,0 +1,40 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.logo {
+    font-family: Arial, sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #bb01ff;
+    text-transform: uppercase;
+    position: relative;
+}
+
+/* Estilos previos (los mismos que antes) */
+
+.logo-text {
+    /* Resto de estilos */
+    animation: neonBlink 1s infinite;
+}
+
+@keyframes neonBlink {
+    0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(159, 10, 142, 0.862);
+    }
+    50% {
+    opacity: 0.5;
+    text-shadow: none;
+    }
+}
+
+
+    to {
+        transform: scale(1.1);
+    }
