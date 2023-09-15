@@ -299,6 +299,10 @@ a {
         width: 180px;
     }
 
+    .detalle_pelicula_imagen.coleccion {
+        width: 180px;
+    }
+
     .detalle_pelicula_texto {
         margin-top: 2rem;
         margin-left: 0;

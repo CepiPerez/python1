@@ -60,6 +60,16 @@
             }
         };
 
+        // Creamos el observer para la animacion de caratulas
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.toggle("loaded", entry.isIntersecting)
+                    observer.unobserve(entry.target)
+                }
+            })
+        });
+
         // Llamamos a la API para obtener la colección
         function leerAPI(seleccion) {
             fetch('https://api.themoviedb.org/3/collection/' + seleccion + '?language=es_ar&region=AR', options)
@@ -89,22 +99,33 @@
             coleccion.parts.forEach(pelicula => {
                 console.log(pelicula)
                 
-                var peli = document.createElement('a');
-                peli.classList.add('pelicula_caja');
-                peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
+                if (pelicula.poster_path) {
+                    var peli = document.createElement('a');
+                    peli.classList.add('pelicula_caja');
                 
-                peli.innerHTML = `
-                <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
-                <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
+                    peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
+                
+                    peli.innerHTML = `
+                    <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
+                    <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
 
-                // Si la película tiene calificación la mostramos
-                if (pelicula.vote_average !== 0) {
-                    peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
-                    `<span style="font-size:.45rem;">%</span></span>`;
+                    // Si la película tiene calificación la mostramos
+                    if (pelicula.vote_average !== 0) {
+                        peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
+                        `<span style="font-size:.45rem;">%</span></span>`;
+                    }
+
+                    listado.appendChild(peli);
+
                 }
 
-                listado.appendChild(peli);
+            });
 
+            // Agregamos cada peli al observer para generar la animacion
+            const cards = document.querySelectorAll(".pelicula_caja");
+            cards.forEach( card => {
+                card.style.transitionDelay = (card.getBoundingClientRect().left) + 'ms'
+                observer.observe(card);
             });
         }
 
