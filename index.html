@@ -6,6 +6,8 @@
     <title>Cine Fans</title>
 
     <link rel="stylesheet" href="assets/app.css">
+    <link rel="stylesheet" href="assets/progress-circle.css">
+
 </head>
 <body>
 
@@ -71,14 +73,27 @@
                 peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
                 
                 peli.innerHTML = `
-                <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
-                <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
+                    <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
+                    <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
 
-                // Si la película tiene calificación la mostramos
-                if (pelicula.vote_average !== 0) {
-                    peli.innerHTML += `<span class="pelicula_calificacion">` + parseInt(pelicula.vote_average * 10) + 
-                    `<span style="font-size:.45rem;">%</span></span>`;
-                }
+                var porcentaje = parseInt(pelicula.vote_average * 10);
+
+                var color = porcentaje >= 70 
+                    ? '#23cf23'
+                    : porcentaje >= 40 
+                        ? 'orange' 
+                        : porcentaje > 0 ? 'red' : '#333';
+
+                
+                peli.innerHTML += `<div class="small-percent-container">
+                    <div class="percent-container" id="circular">
+                        <div class="percent-box" id="percent-box" style="--i:${porcentaje>0 ? porcentaje : '100'}%; 
+                            --clr:${color}">
+                            <div class="circle small">
+                                <span id="percent-text">${porcentaje>0 ? porcentaje : 'SC'}</span>
+                            </div>
+                        </div>
+                    </div></div>`;
 
                 main.appendChild(peli);
 

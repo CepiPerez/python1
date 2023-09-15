@@ -158,7 +158,7 @@
             // Calculamos el porcentaje de calificación de la película
             // y lo mostramos con una barra circular 
             var porcentaje = parseInt(parseFloat(detalle.vote_average).toFixed(1) * 10);
-
+            
             if (porcentaje > 0) {
                 var color = porcentaje >= 70 
                     ? '#23cf23'
@@ -166,7 +166,9 @@
 
                 progress.setAttribute('style', '--i:' + porcentaje + '%; --clr:' + color);
 
-                progressText.innerHTML = porcentaje;
+                progressText.innerHTML = porcentaje + '<i>%</i>';
+            
+                progress.classList.add('ranked');
             }
 
             // Agregamos la fecha de lanzamiento, convertida al formato local

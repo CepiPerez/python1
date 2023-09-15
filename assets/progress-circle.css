@@ -1,3 +1,10 @@
+.small-percent-container {
+   position: absolute;
+   top: 198px;
+   width: 46px;
+   left: 77px
+}
+
 .percent-box {
    position: relative;
    padding: 16px 0;
@@ -16,6 +23,19 @@
    border-radius: 50%;
 }
 
+.percent-box .circle.small {
+   height: 30px;
+   width: 30px;
+}
+
+.percent-box .circle.small span{
+   font-size: 10px;
+   top: 9px;
+   width: 30px;
+   left: 0;
+}
+
+
 .percent-box .circle::before {
    content: '';
    position: absolute;
@@ -24,16 +44,29 @@
    border-radius: 50%;
 }
 
+.percent-box .circle.small::before {
+   inset: 2px;
+}
+
 .percent-box span {
    position: absolute;
    text-align: center;
-   font-size: .8rem;
+   font-size: .9rem;
    color: lightsteelblue;
    top: 14px;
    width: 46px;
+}
+
+.percent-box span i {
+   font-size: .45rem;
+   position: absolute;
+   top: 4px;
 }
 
 .percent-box span small {
    font-size: .5rem;
 }
 
+.percent-box.ranked .circle span {
+   width: 40px;
+}
