@@ -61,6 +61,14 @@ a {
     width: 200px;
     text-align: center;
     position: relative;
+    transform: scale(.5);
+    transition: opacity 1s ease, transform .6s ease;
+    opacity: 0;
+}
+
+.pelicula_caja.loaded {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .pelicula_titulo {

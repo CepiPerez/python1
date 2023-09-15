@@ -6,8 +6,6 @@
     <title>Cine Fans</title>
 
     <link rel="stylesheet" href="assets/app.css">
-
-
 </head>
 <body>
 
@@ -35,6 +33,16 @@
         const main = document.getElementById('listado');
         const botonera = document.getElementById('botonera');
 
+        // Creamos el observer para la animacion de caratulas
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.toggle("loaded", entry.isIntersecting)
+                    observer.unobserve(entry.target)
+                }
+            })
+        });
+
         // Parámetros para la API
         const options = {
             method: 'GET',
@@ -56,7 +64,7 @@
         // que devolvió la API y las agrega al HTML
         function generarListado(peliculas) {
             peliculas.forEach(pelicula => {
-                console.log(pelicula)
+                //console.log(pelicula)
                 
                 var peli = document.createElement('a');
                 peli.classList.add('pelicula_caja');
@@ -74,6 +82,13 @@
 
                 main.appendChild(peli);
 
+            });
+
+            // Agregamos cada peli al observer para generar la animacion
+            const cards = document.querySelectorAll(".pelicula_caja");
+            cards.forEach( card => {
+                card.style.transitionDelay = (card.getBoundingClientRect().left / 2) + 'ms'
+                observer.observe(card);
             });
         }
 
@@ -100,6 +115,18 @@
         }
 
         cambiarListado('now_playing');
+
+
+        // Agregamos cada tarjeta al observer para generar la animacion
+        /* const cards = document.querySelectorAll(".pelicula_caja");
+        console.log(cards)
+                    
+        cards.forEach( card => {
+            observer.observe(card);
+        }); */
+
+        //setFadeAndScroll();
+            
 
     </script>
 

@@ -28,23 +28,13 @@
             <h2 id="titulo" style="margin:0;color:white"></h2>
             
             <p id="titulo_traducido" style="margin:.75rem 0;font-size:.9rem"></p>
-
-
-            
     
             <div style="display:flex;">
                 <div>
-                    <!-- <div id="progress" class="progress-circle">
-                        <span id="progress_text">SC</span>
-                        <div class="left-half-clipper">
-                            <div class="first50-bar"></div>
-                            <div class="value-bar"></div>
-                        </div>
-                    </div> -->
                     <div class="percent-container" id="circular">
-                        <div class="percent-box" style="--i:100%; --clr:#637892">
+                        <div class="percent-box" id="percent-box" data-value="100%" data-color="#637892">
                             <div class="circle">
-                                <span>SC</span>
+                                <span id="percent-text">SC</span>
                             </div>
                         </div>
                     </div>
@@ -104,16 +94,15 @@
         const params = Object.fromEntries(urlSearchParams.entries());
         const trailer = document.getElementById('trailer');
         const listaVideos = document.getElementById('videos');
-        //const progress = document.getElementById('progress');
-        //const progressText = document.getElementById('progress_text');
+        const progress = document.getElementById('percent-box');
+        const progressText = document.getElementById('percent-text');
         const estudios = document.getElementById('estudios');
         const estudiosTitulo = document.getElementById('estudios_titulo');
         const coleccion = document.getElementById('coleccion');
         const reparto = document.getElementById('reparto');
         const listaReparto = document.getElementById('reparto_lista');
         const produccion = document.getElementById('pelicula_detalle_produccion');
-        const circular = document.getElementById('circular');
-
+        
         // Parámetros para la API
         const options = {
             method: 'GET',
@@ -171,18 +160,13 @@
             var porcentaje = parseInt(parseFloat(detalle.vote_average).toFixed(1) * 10);
 
             if (porcentaje > 0) {
-                var color = porcentaje >= 70
+                var color = porcentaje >= 70 
                     ? '#23cf23'
-                    : porcentaje >= 40
-                    ? 'orange'
-                    : 'red';
+                    : porcentaje >= 40 ? 'orange' : 'red';
 
-                circular.innerHTML = `
-                    <div class="percent-box" style="--i:` + porcentaje + `%; --clr:` + color + `">
-                        <div class="circle">
-                            <span>` + porcentaje + `<small>%</small></span>
-                        </div>
-                    </div>`;
+                progress.setAttribute('style', '--i:' + porcentaje + '%; --clr:' + color);
+
+                progressText.innerHTML = porcentaje;
             }
 
             // Agregamos la fecha de lanzamiento, convertida al formato local
@@ -211,13 +195,17 @@
             // mostramos una sección con el póster y el nombre 
             // para que se pueda acceder a la misma
             if (detalle.belongs_to_collection) {
+                let imagen = detalle.belongs_to_collection.poster_path
+                    ? detalle.belongs_to_collection.poster_path
+                    : detalle.belongs_to_collection.backdrop_path
+                    
                 coleccion.innerHTML = `
-                    <img src="https://image.tmdb.org/t/p/w200/` + detalle.belongs_to_collection.poster_path 
+                    <img src="https://image.tmdb.org/t/p/w200/` + imagen 
                     + `" alt="" height="180px" width="auto">
                     <div>
                     <p>Esta película es parte de</p>
                     <a href="coleccion.html?id=` + detalle.belongs_to_collection.id 
-                    + `&path=` + cleanPath(detalle.belongs_to_collection.poster_path)
+                    + `&path=` + cleanPath(imagen)
                     + `">` + detalle.belongs_to_collection.name + `</a>
                     </div>`;
 
@@ -358,6 +346,7 @@
 
         }
 
+
         // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
         function cleanPath(path) {
             return path.replace('/', '').replace('.jpg', '');
@@ -392,7 +381,7 @@
                 resultado.push(genero.name);
             });
 
-            return resultado.join(' - ');
+            return resultado.join(' - '); 
         }
 
         // Esta funcion convierte una fecha al formato local (2023-05-25 a 25-05-2023)
@@ -405,6 +394,8 @@
 
 
     </script>
+
+    <!-- <script src="assets/progress-circle.js"></script> -->
 
 
 </body>
