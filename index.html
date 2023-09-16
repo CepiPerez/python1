@@ -7,11 +7,48 @@
 
     <link rel="stylesheet" href="assets/app.css">
     <link rel="stylesheet" href="assets/progress-circle.css">
+    <style>
+        /* Estilos para el logo */
+        .logo {
+            font-size: 24px; /* Tamaño del texto del logo */
+            font-weight: bold;
+            color: #b50303; /* Cambia el color del texto del logo a rojo */
+            margin-left: 20px; /* Margen izquierdo */
+            margin-right: 100px; /* Margen derecho para que h2 se vea alejado */
+            animation: logoBlink 4s infinite; /* Efecto de parpadeo al logo */
+        }
 
+        /* Animación de parpadeo para el logo */
+        @keyframes logoBlink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Estilos para el encabezado */
+        .header {
+            display: flex;
+            padding: 10px 20px;
+            background-image: url(imagenes/cine.jpg);
+            background-position: right center;
+            background-repeat: no-repeat;
+            background-size: auto;
+
+        }
+
+
+    </style>
 </head>
 <body>
+    <div class="header">
+        <h1 class="logo">CineFilmToday</h1> 
+        <h2>Bienvenido</h2>
+    </div>
 
-    <h1>Bienvenido</h1>
+    
 
     <!-- BOTONERA -->
     <div class="botonera" id="botonera">
@@ -28,6 +65,20 @@
     </section>
 
 
+        <!-- Footer -->
+        <div class="footer">
+            Created by team 14. CaC 23523, python full stack. All rights reserved.2023
+        </div>
+    
+        <style>
+            /* Estilos para el footer */
+            .footer {
+                text-align: center;
+                background-color: rgb(238, 228, 32); /* Cambia el color de fondo a amarillo */
+                color: black; /* Cambia el color del texto a negro */
+                padding: 10px;
+            }
+        </style>
 
     <!-- JAVASCRIPT -->
 

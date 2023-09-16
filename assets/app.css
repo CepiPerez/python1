@@ -7,8 +7,8 @@ body {
     margin: 0;
 }
 
-h1 {
-    color: slategray;
+h2 {
+    color:rgb(0, 128, 255);
     margin: 1rem;
 }
 
@@ -24,8 +24,8 @@ a {
 .botonera {
     width: 100%;
     display: flex;
-    background-color: slateblue;
-    color: white;
+    background-color: rgb(238, 228, 32);
+    color: rgb(0, 0, 0);
     justify-content: center;
     flex-direction: row;
 }
