@@ -10,13 +10,16 @@
     <style>
         /* Estilos para el logo */
         .logo {
-            font-size: 24px; /* Tamaño del texto del logo */
+            display: flex;
+            gap: 2.5em;
+            font-size: 4vw; /* Usar un porcentaje del ancho de la ventana */
             font-weight: bold;
-            color: #b50303; /* Cambia el color del texto del logo a rojo */
-            margin-left: 20px; /* Margen izquierdo */
-            margin-right: 100px; /* Margen derecho para que h2 se vea alejado */
+            color: #FF8200; /* Cambia el color del texto del logo a rojo */
+            margin: auto;
+
             animation: logoBlink 4s infinite; /* Efecto de parpadeo al logo */
         }
+
 
         /* Animación de parpadeo para el logo */
         @keyframes logoBlink {
@@ -31,11 +34,11 @@
         /* Estilos para el encabezado */
         .header {
             display: flex;
-            padding: 10px 20px;
+            width: auto;
             background-image: url(imagenes/cine.jpg);
             background-position: right center;
             background-repeat: no-repeat;
-            background-size: auto;
+            background-size: 100%;
 
         }
 
@@ -45,7 +48,6 @@
 <body>
     <div class="header">
         <h1 class="logo">CineFilmToday</h1> 
-        <h2>Bienvenido</h2>
     </div>
 
     

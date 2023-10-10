@@ -7,10 +7,6 @@ body {
     margin: 0;
 }
 
-h2 {
-    color:rgb(0, 128, 255);
-    margin: 1rem;
-}
 
 hr {
     border-color: darkslategray;
@@ -22,11 +18,11 @@ a {
 }
 
 .botonera {
-    width: 100%;
     display: flex;
+    width: 100%;
     background-color: rgb(238, 228, 32);
     color: rgb(0, 0, 0);
-    justify-content: center;
+    justify-content: space-around; /* Distribuye los elementos de manera uniforme en el ancho */;
     flex-direction: row;
 }
 
