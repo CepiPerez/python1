@@ -1,3 +1,46 @@
+ /* Estilos para el logo */
+ .logo {
+    display: flex;
+    gap: 2.5em;
+    font-size: 4vw; /* Usar un porcentaje del ancho de la ventana */
+    font-weight: bold;
+    color: #f6ff00; /* Cambia el color del texto del logo a rojo */
+    margin: auto;
+
+    animation: logoBlink 4s infinite; /* Efecto de parpadeo al logo */
+}
+
+
+/* Animación de parpadeo para el logo */
+@keyframes logoBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Estilos para el encabezado */
+.header {
+    display: flex;
+    width: auto;
+    max-width: 100%;
+    background-image: url(/imagenes/cine.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+}
+
+/* Estilos para el footer */
+.footer {
+    text-align: center;
+    background-color: rgb(238, 228, 32); /* Cambia el color de fondo a amarillo */
+    color: black; /* Cambia el color del texto a negro */
+    padding: 10px;
+}
+
 * {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
