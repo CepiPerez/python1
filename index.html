@@ -9,25 +9,36 @@
     <link rel="stylesheet" href="assets/progress-circle.css">
     <style>
         /* Estilos para el logo */
-        .logo {
-            display: flex;
-            gap: 2.5em;
-            font-size: 4vw; /* Usar un porcentaje del ancho de la ventana */
-            font-weight: bold;
-            color: #f6ff00; /* Cambia el color del texto del logo a rojo */
-            margin: auto;
-
-            animation: logoBlink 4s infinite; /* Efecto de parpadeo al logo */
+        .neonText {
+            color: #fff;
+            font-size: 1.75rem;
+            font-weight: 400;
+            letter-spacing: .25rem;
+            animation: glow 10s infinite; 
         }
 
-
-        /* Animación de parpadeo para el logo */
-        @keyframes logoBlink {
+        @keyframes glow {
             0%, 100% {
-                opacity: 1;
+                text-shadow:
+                0 0 7px #fff,
+                0 0 10px #fff,
+                0 0 21px #fff,
+                0 0 42px rgba(0, 255, 170, 0),
+                0 0 82px rgba(0, 255, 170, 0),
+                0 0 92px rgba(0, 255, 170, 0),
+                0 0 102px rgba(0, 255, 170, 0),
+                0 0 151px #0fa;
             }
             50% {
-                opacity: 0;
+                text-shadow:
+                0 0 7px #ffffff00,
+                0 0 10px #ffffff00,
+                0 0 21px #ffffff00,
+                0 0 42px rgba(0, 255, 170, 0),
+                0 0 82px rgba(0, 255, 170, 0),
+                0 0 92px rgba(0, 255, 170, 0),
+                0 0 102px rgba(0, 255, 170, 0),
+                0 0 151px rgba(0, 255, 170, 0);
             }
         }
 
@@ -39,7 +50,7 @@
             background-position: right center;
             background-repeat: no-repeat;
             background-size: 100%;
-
+            padding: 0 1rem;
         }
 
 
@@ -47,7 +58,7 @@
 </head>
 <body>
     <div class="header">
-        <h1 class="logo">CineFilmToday</h1> 
+        <h3 class="neonText">CineFilmToday</h3> 
     </div>
 
     
@@ -110,7 +121,7 @@
 
         // Llamamos a la API para obtener la lista de películas
         function leerAPI(seleccion) {
-            fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1&region=AR', options)
+            fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1', options)
                 .then(response => response.json())
                 .then(response => generarListado(response.results))
                 .catch(err => console.error(err));
