@@ -7,7 +7,63 @@ body {
     margin: 0;
 }
 
+/* Estilos para el logo */
+.neonText {
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: .25rem;
+    animation: glow 10s infinite; 
+}
 
+@keyframes glow {
+    0%, 100% {
+        text-shadow:
+        0 0 7px #fff,
+        0 0 10px #fff,
+        0 0 21px #fff,
+        0 0 42px rgba(0, 255, 170, 0),
+        0 0 82px rgba(0, 255, 170, 0),
+        0 0 92px rgba(0, 255, 170, 0),
+        0 0 102px rgba(0, 255, 170, 0),
+        0 0 151px #0fa;
+    }
+    50% {
+        text-shadow:
+        0 0 7px #ffffff00,
+        0 0 10px #ffffff00,
+        0 0 21px #ffffff00,
+        0 0 42px rgba(0, 255, 170, 0),
+        0 0 82px rgba(0, 255, 170, 0),
+        0 0 92px rgba(0, 255, 170, 0),
+        0 0 102px rgba(0, 255, 170, 0),
+        0 0 151px rgba(0, 255, 170, 0);
+    }
+}
+
+
+/* Estilos para el encabezado */
+.header {
+    display: flex;
+    width: auto;
+    background-image: url(../imagenes/cine.jpg);
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: 0 1rem;
+}
+
+
+/* Estilos para el footer */
+.footer {
+    text-align: center;
+    background-color: rgb(238, 228, 32);
+    color: black; 
+    padding: 10px;
+}
+
+
+/* Elementos varios */
 hr {
     border-color: darkslategray;
     margin: .5rem 0;
@@ -17,6 +73,8 @@ a {
     text-decoration: none;
 }
 
+
+/* Barra de navegacion */
 .botonera {
     display: flex;
     width: 100%;
@@ -46,6 +104,7 @@ a {
 }
 
 
+/* Caratulas de peliculas y detalles */
 .peliculas_listado {
     display: flex;
     flex-wrap: wrap;
@@ -102,6 +161,7 @@ a {
     opacity: 1;
     scale: 1.05;
 }
+
 .pelicula_caja:hover .pelicula_titulo {
     color: slategray;
 }
@@ -146,7 +206,6 @@ a {
     width: 200px;
 }
 
-
 .detalle_pelicula_texto {
     width: calc(70% - 3rem);
     color: rgb(255, 255, 255);
@@ -182,7 +241,6 @@ a {
     line-height: 1.45rem;
 }
 
-
 .pelicula_detalle_video {
     color: slateblue;
     text-decoration: none;
@@ -215,15 +273,18 @@ a {
     border-radius: .5rem;
     padding: 1rem;
 }
+
 .pelicula_coleccion img {
     border-radius: .5rem;
     margin-right: 1rem;
 }
+
 .pelicula_coleccion a {
     color: #a2b3c4;
     transition: all .6s ease;
     font-weight: 600;
 }
+
 .pelicula_coleccion a:hover {
     color: #cbdcec;
 }
@@ -252,6 +313,7 @@ a {
     width: 100%;
     margin: .25rem 1rem .25rem 0;
 }
+
 .pelicula_actor .image {
     height: 50px;
     width: 42px;
@@ -260,18 +322,19 @@ a {
     background-size: cover;
     border-radius: .5rem;
 }
+
 .pelicula_actor_detalle {
     display: flex;
     flex-direction: column;
     margin: .35rem 1rem 0;
     color: white;
 }
+
 .pelicula_actor_detalle span {
     color: slategray;
     font-size: .8rem;
     padding-top: 5px;
 }
-
 
 
 @media (max-width: 768px) {
@@ -304,10 +367,6 @@ a {
         margin-left: 0;
         width: 100%;
     }
-
-    /* .pelicula_trailer {
-        margin: 0 .5rem;
-    } */
     
     .pelicula_detalle_produccion_item{
         margin: 0 3rem 0 0;
@@ -316,4 +375,78 @@ a {
     .pelicula_videos {
         margin: 0 1rem;
     }
+}
+
+
+/* Circulo de porcentaje de calificacion */
+.small-percent-container {
+    position: absolute;
+    top: 198px;
+    width: 46px;
+    left: 77px
+}
+
+.percent-box {
+    position: relative;
+    padding: 16px 0;
+    width: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.percent-box .circle {
+    position: relative;
+    height: 46px;
+    width: 46px;
+    background: conic-gradient(from 0deg, var(--clr) 0%, var(--clr) 0% var(--i), #333 var(--i), #333 100%);
+    border-radius: 50%;
+}
+
+.percent-box .circle.small {
+    height: 30px;
+    width: 30px;
+}
+
+.percent-box .circle.small span{
+    font-size: 10px;
+    top: 9px;
+    width: 30px;
+    left: 0;
+}
+
+.percent-box .circle::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: #0f0f0f;
+    border-radius: 50%;
+}
+
+.percent-box .circle.small::before {
+    inset: 2px;
+}
+
+.percent-box span {
+    position: absolute;
+    text-align: center;
+    font-size: .9rem;
+    color: lightsteelblue;
+    top: 14px;
+    width: 46px;
+}
+
+.percent-box span i {
+    font-size: .45rem;
+    position: absolute;
+    top: 4px;
+}
+
+.percent-box span small {
+    font-size: .5rem;
+}
+
+.percent-box.ranked .circle span {
+    width: 40px;
 }

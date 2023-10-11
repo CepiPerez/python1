@@ -6,62 +6,13 @@
     <title>Cine Fans</title>
 
     <link rel="stylesheet" href="assets/app.css">
-    <link rel="stylesheet" href="assets/progress-circle.css">
-    <style>
-        /* Estilos para el logo */
-        .neonText {
-            color: #fff;
-            font-size: 1.75rem;
-            font-weight: 400;
-            letter-spacing: .25rem;
-            animation: glow 10s infinite; 
-        }
 
-        @keyframes glow {
-            0%, 100% {
-                text-shadow:
-                0 0 7px #fff,
-                0 0 10px #fff,
-                0 0 21px #fff,
-                0 0 42px rgba(0, 255, 170, 0),
-                0 0 82px rgba(0, 255, 170, 0),
-                0 0 92px rgba(0, 255, 170, 0),
-                0 0 102px rgba(0, 255, 170, 0),
-                0 0 151px #0fa;
-            }
-            50% {
-                text-shadow:
-                0 0 7px #ffffff00,
-                0 0 10px #ffffff00,
-                0 0 21px #ffffff00,
-                0 0 42px rgba(0, 255, 170, 0),
-                0 0 82px rgba(0, 255, 170, 0),
-                0 0 92px rgba(0, 255, 170, 0),
-                0 0 102px rgba(0, 255, 170, 0),
-                0 0 151px rgba(0, 255, 170, 0);
-            }
-        }
-
-        /* Estilos para el encabezado */
-        .header {
-            display: flex;
-            width: auto;
-            background-image: url(imagenes/cine.jpg);
-            background-position: right center;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            padding: 0 1rem;
-        }
-
-
-    </style>
 </head>
 <body>
     <div class="header">
-        <h3 class="neonText">CineFilmToday</h3> 
+        <h3 class="neonText">CineFilmToday</h3>
     </div>
 
-    
 
     <!-- BOTONERA -->
     <div class="botonera" id="botonera">
@@ -79,26 +30,23 @@
     </section>
 
 
-        <!-- Footer -->
-        <div class="footer">
-            Created by team 14. CaC 23523, python full stack. All rights reserved.2023
-        </div>
+    <!-- Footer -->
+    <div class="footer">
+        Created by team 14. CaC 23523, python full stack. All rights reserved.2023
+    </div>
     
-        <style>
-            /* Estilos para el footer */
-            .footer {
-                text-align: center;
-                background-color: rgb(238, 228, 32); /* Cambia el color de fondo a amarillo */
-                color: black; /* Cambia el color del texto a negro */
-                padding: 10px;
-            }
-        </style>
 
     <!-- JAVASCRIPT -->
 
+    <script src="assets/app.js"></script>
+    <script src="assets/api.js"></script>
+
     <script>
-        const main = document.getElementById('listado');
+        // Parametro para ver cual es el boton activo del menu
         const botonera = document.getElementById('botonera');
+
+        // Parametros para generar la lista de peliculas
+        const main = document.getElementById('listado');
 
         // Creamos el observer para la animacion de caratulas
         const observer = new IntersectionObserver(entries => {
@@ -109,68 +57,6 @@
                 }
             })
         });
-
-        // Parámetros para la API
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
-            }
-        };
-
-        // Llamamos a la API para obtener la lista de películas
-        function leerAPI(seleccion) {
-            fetch('https://api.themoviedb.org/3/movie/' + seleccion + '?language=en&page=1', options)
-                .then(response => response.json())
-                .then(response => generarListado(response.results))
-                .catch(err => console.error(err));
-        }
-
-        // Esta funcion genera la lista de películas
-        // que devolvió la API y las agrega al HTML
-        function generarListado(peliculas) {
-            peliculas.forEach(pelicula => {
-                //console.log(pelicula)
-                
-                var peli = document.createElement('a');
-                peli.classList.add('pelicula_caja');
-                peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
-                
-                peli.innerHTML = `
-                    <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
-                    <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
-
-                var porcentaje = parseInt(pelicula.vote_average * 10);
-
-                var color = porcentaje >= 70 
-                    ? '#23cf23'
-                    : porcentaje >= 40 
-                        ? 'orange' 
-                        : porcentaje > 0 ? 'red' : '#333';
-
-                
-                peli.innerHTML += `<div class="small-percent-container">
-                    <div class="percent-container" id="circular">
-                        <div class="percent-box" id="percent-box" style="--i:${porcentaje>0 ? porcentaje : '100'}%; 
-                            --clr:${color}">
-                            <div class="circle small">
-                                <span id="percent-text">${porcentaje>0 ? porcentaje : 'SC'}</span>
-                            </div>
-                        </div>
-                    </div></div>`;
-
-                main.appendChild(peli);
-
-            });
-
-            // Agregamos cada peli al observer para generar la animacion
-            const cards = document.querySelectorAll(".pelicula_caja");
-            cards.forEach( card => {
-                card.style.transitionDelay = (card.getBoundingClientRect().left / 2) + 'ms'
-                observer.observe(card);
-            });
-        }
 
         // Esta funcion limpia la lista acual de películas
         // Luego llama a la API para cargar la lista nueva
@@ -186,28 +72,16 @@
                 }
             }
 
-            leerAPI(seleccion);
-        }
+            // Usamos la API para traer los datos
+            // Cargamos la lista de peliculas en el HTML
+            cargarListadoPeliculas(seleccion).then( function(res) {
+                generarListadoPeliculas(res, main);
+            });
 
-        // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
-        function cleanPath(path) {
-            return path.replace('/', '').replace('.jpg', '');
         }
 
         cambiarListado('now_playing');
-
-
-        // Agregamos cada tarjeta al observer para generar la animacion
-        /* const cards = document.querySelectorAll(".pelicula_caja");
-        console.log(cards)
-                    
-        cards.forEach( card => {
-            observer.observe(card);
-        }); */
-
-        //setFadeAndScroll();
-            
-
+        
     </script>
 
 </body>

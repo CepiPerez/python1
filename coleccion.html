@@ -6,13 +6,13 @@
     <title>Cine Fans</title>
 
     <link rel="stylesheet" href="assets/app.css">
-    <link rel="stylesheet" href="assets/progress-circle.css">
 
 </head>
 <body>
 
-    <h1>Detalle de colección</h1>
-    <hr>
+    <div class="header">
+        <h3 class="neonText">CineFilmToday</h3>
+    </div>
 
     <section class="detalle_pelicula">
 
@@ -40,6 +40,8 @@
             
     </div>
 
+    <script src="assets/app.js"></script>
+    <script src="assets/api.js"></script>
 
 
     <!-- JAVASCRIPT -->
@@ -49,16 +51,8 @@
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
 
+        // Parametros para generar la lista de peliculas
         const listado = document.getElementById('listado');
-
-        // Parámetros para la API
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODViZTJjYWY5MjUzOWVmMDM0NzA1ODFhMWQ1ZTAzMSIsInN1YiI6IjY0ZTY4ZDQyYzYxM2NlMDEwYjhiYzc1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzcehxudafYj4U2pzKNuWxw8BZLJJFK_sVXO_Bjg6QE'
-            }
-        };
 
         // Creamos el observer para la animacion de caratulas
         const observer = new IntersectionObserver(entries => {
@@ -70,100 +64,10 @@
             })
         });
 
-        // Llamamos a la API para obtener la colección
-        function leerAPI(seleccion) {
-            fetch('https://api.themoviedb.org/3/collection/' + seleccion + '?language=es_ar&region=AR', options)
-                .then(response => response.json())
-                .then(response => cargarColeccion(response))
-                .catch(err => console.error(err));
-        }
 
-
-        // Cargamos la colección
-        function cargarColeccion(coleccion) {
-            console.log(coleccion);
-
-            // Agregamos el fondo usando CSS (background_image) al elemento
-            agregarFondo('detalle_pelicula_fondo', 'https://image.tmdb.org/t/p/original/' + coleccion.backdrop_path);
-
-            // Agregamos la imagen del póster usando el atributo "src" de la etiqueta "img"
-            agregarAtributo('poster', 'src', 'https://image.tmdb.org/t/p/w500/' + params.path + '.jpg');
-
-            // Agregamos el título
-            agregarTexto('titulo', coleccion.name);
-
-            // Agregamos la descripción
-            agregarTexto('sinopsis', coleccion.overview);
-
-            // Agregamos las películas de la colección al listado HTML
-            coleccion.parts.forEach(pelicula => {
-                console.log(pelicula)
-                
-                if (pelicula.poster_path) {
-                    var peli = document.createElement('a');
-                    peli.classList.add('pelicula_caja');
-                
-                    peli.setAttribute('href', 'detalle.html?id=' + pelicula.id + '&path=' + cleanPath(pelicula.poster_path));
-                
-                    peli.innerHTML = `
-                        <img class="pelicula_poster" src="https://image.tmdb.org/t/p/w300/` + pelicula.poster_path  + `" alt="" loading="lazy">
-                        <p class="pelicula_titulo">` + pelicula.original_title + `</p>`;
-
-                    var porcentaje = parseInt(pelicula.vote_average * 10);
-
-                    var color = porcentaje >= 70 
-                        ? '#23cf23'
-                        : porcentaje >= 40 
-                            ? 'orange' 
-                            : porcentaje > 0 ? 'red' : '#333';
-
-                    
-                    peli.innerHTML += `<div class="small-percent-container">
-                        <div class="percent-container" id="circular">
-                            <div class="percent-box" id="percent-box" style="--i:${porcentaje>0 ? porcentaje : '100'}%; 
-                                --clr:${color}">
-                                <div class="circle small">
-                                    <span id="percent-text">${porcentaje>0 ? porcentaje : 'SC'}</span>
-                                </div>
-                            </div>
-                        </div></div>`;
-
-                    listado.appendChild(peli);
-
-                }
-
-            });
-
-            // Agregamos cada peli al observer para generar la animacion
-            const cards = document.querySelectorAll(".pelicula_caja");
-            cards.forEach( card => {
-                card.style.transitionDelay = (card.getBoundingClientRect().left) + 'ms'
-                observer.observe(card);
-            });
-        }
-
-
-        // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
-        function cleanPath(path) {
-            return path.replace('/', '').replace('.jpg', '');
-        }
-
-        // Esta funcion agraga un fondo al CSS de un elemento
-        function agregarFondo(id, value) {
-            document.getElementById(id).style.backgroundImage = 'url("' + value + '")';
-        }
-
-        // Esta funcion agraga un atributo a un elemento
-        function agregarAtributo(id, attr, value) {
-            document.getElementById(id).setAttribute(attr, value);
-        }
-
-        // Esta funcion agraga el texto directamente al elemento
-        function agregarTexto(id, value) {
-            document.getElementById(id).innerHTML = value;
-        }
-
-        leerAPI(params.id);
+        cargarColeccionPeliculas(params.id).then( function(res) {
+            generarColeccionPeliculas(res, listado);
+        });
         
     </script>
 
