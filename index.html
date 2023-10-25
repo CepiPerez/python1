@@ -5,22 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cine Fans</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/app.css">
 
 </head>
 <body>
     <div class="header">
-        <h3 class="neonText">CineFilmToday</h3>
+        <a href="index.html">
+            <h3 class="neonText animated">CineFilmToday</h3>
+        </a>
+        <i id="mainmenu" class="menu ri-menu-5-line"></i>
     </div>
 
+    <!-- MENU HAMBURGUESA -->
+    <div class="menu-container">
+        <img src="imagenes/logo.png" alt="" width="120">
+        <h3 class="neonText">CineFilmToday</h3>
+        <hr>
+        <ul>
+            <li>
+                <a href="index.html">INICIO</a>
+            </li>
+            <li>
+                <a href="contacto.html">CONTACTO</a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- SOMBRA PARA MENU HAMBURGUESA -->
+    <div class="menu-container-shadow"></div>
 
-    <!-- BOTONERA -->
-    <div class="botonera" id="botonera">
+
+    <!-- BOTONERA VIEJA -->
+    <!-- <div class="botonera" id="botonera">
         <span class="botonera_item active" id="now_playing" onclick="cambiarListado('now_playing')">En cartelera</span>
         <span class="botonera_item" id="popular" onclick="cambiarListado('popular')">Populares</span>
         <span class="botonera_item" id="top_rated" onclick="cambiarListado('top_rated')">Mejor calificadas</span>
         <span class="botonera_item" id="upcoming" onclick="cambiarListado('upcoming')">Próximos estrenos</span>
         <a class="botonera_item" id="contacto" href="contacto.html">Contactenos</a>
+    </div> -->
+
+    <!-- BOTONERA NUEVA -->
+    <div class="tab-container">
+        <div class="tabs">
+            <input type="radio" id="radio-1" name="tabs" data-tag="now_playing" onclick="cambiarListado('now_playing')" checked />
+            <label class="tab active" for="radio-1">En cartelera</label>
+            <input type="radio" id="radio-2" name="tabs" data-tag="popular" onclick="cambiarListado('popular')" />
+            <label class="tab" for="radio-2">Populares</label>
+            <input type="radio" id="radio-3" name="tabs" data-tag="top_rated" onclick="cambiarListado('top_rated')" />
+            <label class="tab" for="radio-3">Mejor calificadas</label>
+            <input type="radio" id="radio-4" name="tabs" data-tag="upcoming" onclick="cambiarListado('upcoming')" />
+            <label class="tab" for="radio-4">Próximos estrenos</label>
+            <span class="glider"></span>
+        </div>
     </div>
 
 
@@ -43,7 +80,7 @@
 
     <script>
         // Parametro para ver cual es el boton activo del menu
-        const botonera = document.getElementById('botonera');
+        const botonera = document.querySelectorAll('.tab-container .tab');
 
         // Parametros para generar la lista de peliculas
         const main = document.getElementById('listado');
@@ -64,8 +101,8 @@
             
             main.innerHTML = '';
 
-            for (boton of botonera.children) {
-                if (boton.getAttribute('id') == seleccion) {
+            for (boton of botonera) {
+                if (boton.getAttribute('data-tag') == seleccion) {
                     boton.classList.add('active')
                 } else {
                     boton.classList.remove('active')
@@ -81,7 +118,8 @@
         }
 
         cambiarListado('now_playing');
-        
+
+       
     </script>
 
 </body>

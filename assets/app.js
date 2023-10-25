@@ -1,3 +1,20 @@
+// Menu hamburguesa
+const mainmenu = document.getElementById('mainmenu');
+const menucontainer = document.querySelector('.menu-container');
+const menucontainershadow = document.querySelector('.menu-container-shadow');
+
+mainmenu.addEventListener('click', toggleMenu, false);
+menucontainershadow.addEventListener('click', toggleMenu, false);
+
+function toggleMenu() {
+    if (menucontainer.classList.contains('opened')) {
+        menucontainer.classList.remove('opened')
+    } else {
+        menucontainer.classList.add('opened')
+    }
+}
+
+
 // Esta funcion solamente limpia la imagen (le saca la barra y la extensión)
 function cleanPath(path) {
     return path.replace('/', '').replace('.jpg', '');
@@ -52,6 +69,7 @@ Parametros:
 
 */
 function generarListadoPeliculas(peliculas, main) {
+
     peliculas.forEach(pelicula => {
         //console.log(pelicula)
         
