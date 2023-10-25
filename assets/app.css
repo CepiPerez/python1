@@ -675,7 +675,7 @@ input[type=text], select, textarea {
     resize: vertical;
 }
   
-input[type=submit] {
+input[type=button] {
     background-color: #04AA6D;
     color: white;
     padding: .35rem 1.5rem;
@@ -687,4 +687,8 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: #0ad88c;
 }
-  
+
+input[type=text].error, select.error, textarea.error {
+   border-color: #df3535;
+   border-width: 2px;
+}

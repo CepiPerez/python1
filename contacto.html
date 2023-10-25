@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0">
     <title>CineFilmToday</title>
 
     <link rel="icon" type="image/png" href="imagenes/favicon.png" />
@@ -45,7 +45,7 @@
     <h4 class="subtitulo">Contáctenos</h4>
 
     <div class="form-container">
-        <form action="action_page.php">
+        <form action="#" id="myForm">
       
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre..">
@@ -56,7 +56,7 @@
           <label for="mensaje">Mensaje</label>
           <textarea id="mensaje" name="mensaje" placeholder="Ingrese su mensaje.." style="height:200px"></textarea>
       
-          <input type="submit" value="Enviar">
+          <input type="button" id="submit" value="Enviar">
       
         </form>
       </div>
@@ -64,7 +64,53 @@
     <!-- JAVASCRIPT -->
     
     <script>
-        
+        const validateEmail = (string) => {
+            return string.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+
+        var submit = document.querySelector('#submit');
+
+        submit.addEventListener('click', function() {
+            
+            let nombre = document.querySelector('#nombre');
+            let email = document.querySelector('#email');
+            let mensaje = document.querySelector('#mensaje');
+            
+            let errores = false;
+
+            if (nombre.value.length < 5) {
+                errores = true;
+                nombre.classList.add('error');
+            } else {
+                nombre.classList.remove('error');
+            }
+
+            if (!validateEmail(email.value)) {
+                errores = true;
+                email.classList.add('error');
+            } else {
+                email.classList.remove('error');
+            }
+
+            if (mensaje.value.length < 5) {
+                errores = true;
+                mensaje.classList.add('error');
+            } else {
+                mensaje.classList.remove('error');
+            }
+
+            if (errores) {
+                return;
+            } else {
+                alert('Mensaje enviado!');
+                document.querySelector('#myForm').reset();
+            }
+
+
+        }, false);
+
         
     </script>
 
