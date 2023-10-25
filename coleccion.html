@@ -14,14 +14,15 @@
 <body>
 
     <div class="header">
-        <div class="logo-block">
-            <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
-            <a href="index.html">
+        <a href="index.html">
+            <div class="logo-block">
+                <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
                 <h3 class="neonText animated">CineFilmToday</h3>
-            </a>
-        </div>
+            </div>
+        </a>
         <i id="mainmenu" class="menu ri-menu-5-line"></i>
     </div>
+
 
     <!-- MENU HAMBURGUESA -->
     <div class="menu-container">
@@ -41,39 +42,46 @@
     <!-- SOMBRA PARA MENU HAMBURGUESA -->
     <div class="menu-container-shadow"></div>
 
+    <section class="main-section">
 
+        <div class="detalle_pelicula">
 
-    <section class="detalle_pelicula">
+            <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
 
-        <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
+            <div class="detalle_pelicula_imagen coleccion">
+                <img id="poster" class="pelicula_poster_grande" src="" alt="">
 
+            </div>
 
-        <div class="detalle_pelicula_imagen coleccion">
-            <img id="poster" class="pelicula_poster_grande" src="" alt="">
+            <div class="detalle_pelicula_texto">
+                <h2 id="titulo" style="margin:0;color:white"></h2>
+                <br>
+                <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
+
+            </div>
 
         </div>
 
-        <div class="detalle_pelicula_texto">
-            <h2 id="titulo" style="margin:0;color:white"></h2>
-            <br>
-            <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
 
+        <div class="peliculas_listado" id="listado">
+            <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
+                
         </div>
-
 
     </section>
+    
 
-
-    <div class="peliculas_listado" id="listado">
-        <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
-            
+    <!-- Footer -->
+    <div class="footer">
+        Created by team 14. CaC 23523, python full stack. All rights reserved.2023
     </div>
 
-    <script src="assets/app.js"></script>
-    <script src="assets/api.js"></script>
 
 
     <!-- JAVASCRIPT -->
+    
+    <script src="assets/app.js"></script>
+    <script src="assets/api.js"></script>
     
     <script>
         // Conseguimos los parámetros de la query (en la url)

@@ -14,12 +14,12 @@
 <body>
 
     <div class="header">
-        <div class="logo-block">
-            <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
-            <a href="index.html">
+        <a href="index.html">
+            <div class="logo-block">
+                <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
                 <h3 class="neonText animated">CineFilmToday</h3>
-            </a>
-        </div>
+            </div>
+        </a>
         <i id="mainmenu" class="menu ri-menu-5-line"></i>
     </div>
 
@@ -41,77 +41,86 @@
     <!-- SOMBRA PARA MENU HAMBURGUESA -->
     <div class="menu-container-shadow"></div>
 
-
-    <section class="detalle_pelicula">
-
-        <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
-
-
-        <div class="detalle_pelicula_imagen">
-            <img id="poster" class="pelicula_poster_grande" src="" alt="">
-
-        </div>
-
-        <div class="detalle_pelicula_texto">
-            <h2 id="titulo" style="margin:0;color:white"></h2>
-            
-            <p id="titulo_traducido" style="margin:.75rem 0;font-size:.9rem"></p>
+    <section class="main-section">
     
-            <div style="display:flex;">
-                <div>
-                    <div class="percent-container" id="circular">
-                        <div class="percent-box" id="percent-box" style="--i:100%;--clr:#333">
-                            <div class="circle">
-                                <span id="percent-text">SC</span>
+        <div class="detalle_pelicula">
+    
+            <div class="detalle_pelicula_fondo" id="detalle_pelicula_fondo"></div>
+    
+    
+            <div class="detalle_pelicula_imagen">
+                <img id="poster" class="pelicula_poster_grande" src="" alt="">
+    
+            </div>
+    
+            <div class="detalle_pelicula_texto">
+                <h2 id="titulo" style="margin:0;color:white"></h2>
+                
+                <p id="titulo_traducido" style="margin:.75rem 0;font-size:.9rem"></p>
+        
+                <div style="display:flex;">
+                    <div>
+                        <div class="percent-container" id="circular">
+                            <div class="percent-box" id="percent-box" style="--i:100%;--clr:#333">
+                                <div class="circle">
+                                    <span id="percent-text">SC</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div style="margin: .15rem 1.5rem">
+                        <p id="fecha" style="font-size:.8rem;"></p>
+                        <p id="genero" style="font-size:.8rem;font-weight:600;"></p>
+                    </div>
                 </div>
-                <div style="margin: .15rem 1.5rem">
-                    <p id="fecha" style="font-size:.8rem;"></p>
-                    <p id="genero" style="font-size:.8rem;font-weight:600;"></p>
-                </div>
-            </div>
-
-            <i id="tag" style="opacity: .7;"></i>
-
-            <p style="font-size:1.15rem;font-weight:500;margin-bottom:0;">Vista general</p>
-            <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
     
-            <p id="calificacion" style="font-size:.9rem;margin-top:2rem;"></p>
-
-            <p id="duracion" style="font-size:.9rem"></p>
-
-            <div id="pelicula_detalle_produccion" class="pelicula_detalle_produccion">
-
+                <i id="tag" style="opacity: .7;"></i>
+    
+                <p style="font-size:1.15rem;font-weight:500;margin-bottom:0;">Vista general</p>
+                <p id="sinopsis" style="font-size:.9rem;margin-top:.5rem"></p>
+        
+                <p id="calificacion" style="font-size:.9rem;margin-top:2rem;"></p>
+    
+                <p id="duracion" style="font-size:.9rem"></p>
+    
+                <div id="pelicula_detalle_produccion" class="pelicula_detalle_produccion">
+    
+                </div>
+    
             </div>
-
+    
+    
         </div>
-
+    
+        <div id="coleccion" class="pelicula_coleccion" style="display:none;">
+            
+        </div>
+    
+        <div id="reparto" style="display: none; margin: 0 1rem;">
+            <p style="margin: 1rem 0 .5rem; font-size: 1rem; color: slategray">Reparto:</p>
+            <div id="reparto_lista" class="pelicula_reparto" >
+    
+            </div>
+        </div>
+    
+        <div id="trailer" class="pelicula_trailer" style="display: none;">
+        </div>
+    
+        <div id="videos" class="pelicula_videos" style="display: none;">
+            <p style="margin: 1rem 0 .25rem; font-size: .8rem;">Videos disponibles:</p>
+    
+        </div>
+    
+        <p id="estudios_titulo" style="color:gray;font-size:.8rem;margin:1.5rem 1rem 0;display: none;">Productoras:</p>
+        <div id="estudios" class="estudios" style="display: none;">            
+        </div>
 
     </section>
 
-    <div id="coleccion" class="pelicula_coleccion" style="display:flex;">
-        
-    </div>
 
-    <div id="reparto" style="display: none; margin: 0 1rem;">
-        <p style="margin: 1rem 0 .5rem; font-size: 1rem; color: slategray">Reparto:</p>
-        <div id="reparto_lista" class="pelicula_reparto" >
-
-        </div>
-    </div>
-
-    <div id="trailer" class="pelicula_trailer" style="display: none;">
-    </div>
-
-    <div id="videos" class="pelicula_videos" style="display: none;">
-        <p style="margin: 1rem 0 .25rem; font-size: .8rem;">Videos disponibles:</p>
-
-    </div>
-
-    <p id="estudios_titulo" style="color:gray;font-size:.8rem;margin:1.5rem 1rem 0;display: none;">Productoras:</p>
-    <div id="estudios" class="estudios" style="display: none;">            
+    <!-- Footer -->
+    <div class="footer">
+        Created by team 14. CaC 23523, python full stack. All rights reserved.2023
     </div>
 
 

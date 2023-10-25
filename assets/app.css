@@ -8,12 +8,17 @@ body {
     overflow-x: hidden;
 }
 
+.main-section {
+    min-height: calc(100dvh - 98px - 25px);
+}
+
 /* Estilos para el logo */
 .neonText {
     color: #fff;
     font-size: 1.35rem;
     font-weight: 400;
 }
+
 .neonText.animated {
     font-size: 1.75rem;
     animation: glow 10s infinite; 
@@ -55,6 +60,7 @@ body {
     background-repeat: no-repeat;
     background-size: 100%;
     padding: 0 1rem;
+    height: 98px;
 }
 
 .header .menu {
@@ -89,7 +95,7 @@ body {
     background-color: #333;
     color: white;
     z-index: 9;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: -360px;
     transition: all .3s ease;
@@ -101,7 +107,7 @@ body {
     opacity: 0;
     transition: all .3s ease;
     background-color: black;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100dvh;
@@ -138,20 +144,40 @@ body {
     border-color: #666;
 }
 
-@media (max-width: 850px) {
-    .menu-container a {
-        font-size: 1.15rem;
-    }
-    
-}
-
-
-/* Estilos para el footer */
 .footer {
     text-align: center;
     background-color: rgb(238, 228, 32);
     color: black; 
     padding: 10px;
+    height: 25px;
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        height: 82px;
+    }
+    .footer {
+        height: 50px;
+    }
+    .main-section {
+        min-height: calc(100dvh - 82px - 50px);
+    }    
+    .menu-container a {
+        font-size: 1.15rem;
+    }
+    .neonText.animated {
+        letter-spacing: normal;
+        font-size: 1.5rem;
+    }
+    .header .logo-block img {
+        width: 30px;
+        height: 30px;
+    }
+    .header .menu {
+        font-size: 1.75rem;
+        top: 1.75rem;
+    }
 }
 
 
@@ -169,6 +195,7 @@ a {
     margin: 1rem;
     color: white;
     font-size: 1.5rem;
+    font-weight: 400;
 }
 
 
@@ -313,6 +340,7 @@ input[id="radio-4"]:checked ~ .glider {
     justify-content: center;
     margin-top: 2rem;
     transition: all 5s ease;
+    min-height: 400px;
 }
 
 .pelicula_caja {
@@ -546,7 +574,7 @@ input[id="radio-4"]:checked ~ .glider {
     }
 
     .detalle_pelicula {
-        margin: 2rem 0 0 0;
+        margin: 0;
     }
 
     .detalle_pelicula_fondo {

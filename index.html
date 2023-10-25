@@ -13,12 +13,12 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo-block">
-            <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
-            <a href="index.html">
+        <a href="index.html">
+            <div class="logo-block">
+                <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
                 <h3 class="neonText animated">CineFilmToday</h3>
-            </a>
-        </div>
+            </div>
+        </a>
         <i id="mainmenu" class="menu ri-menu-5-line"></i>
     </div>
 
@@ -50,26 +50,32 @@
         <a class="botonera_item" id="contacto" href="contacto.html">Contactenos</a>
     </div> -->
 
-    <!-- BOTONERA NUEVA -->
-    <div class="tab-container">
-        <div class="tabs">
-            <input type="radio" id="radio-1" name="tabs" data-tag="now_playing" onclick="cambiarListado('now_playing')" checked />
-            <label class="tab active" for="radio-1">En cartelera</label>
-            <input type="radio" id="radio-2" name="tabs" data-tag="popular" onclick="cambiarListado('popular')" />
-            <label class="tab" for="radio-2">Populares</label>
-            <input type="radio" id="radio-3" name="tabs" data-tag="top_rated" onclick="cambiarListado('top_rated')" />
-            <label class="tab" for="radio-3">Mejor calificadas</label>
-            <input type="radio" id="radio-4" name="tabs" data-tag="upcoming" onclick="cambiarListado('upcoming')" />
-            <label class="tab" for="radio-4">Próximos estrenos</label>
-            <span class="glider"></span>
+
+    <section class="main-section">
+
+        <!-- BOTONERA NUEVA -->
+        <div class="tab-container">
+            <div class="tabs">
+                <input type="radio" id="radio-1" name="tabs" data-tag="now_playing" onclick="cambiarListado('now_playing')" checked />
+                <label class="tab active" for="radio-1">En cartelera</label>
+                <input type="radio" id="radio-2" name="tabs" data-tag="popular" onclick="cambiarListado('popular')" />
+                <label class="tab" for="radio-2">Populares</label>
+                <input type="radio" id="radio-3" name="tabs" data-tag="top_rated" onclick="cambiarListado('top_rated')" />
+                <label class="tab" for="radio-3">Mejor calificadas</label>
+                <input type="radio" id="radio-4" name="tabs" data-tag="upcoming" onclick="cambiarListado('upcoming')" />
+                <label class="tab" for="radio-4">Próximos estrenos</label>
+                <span class="glider"></span>
+            </div>
         </div>
-    </div>
 
 
-    <section class="peliculas_listado" id="listado">
-        <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
-    
+        <div class="peliculas_listado" id="listado">
+            <!-- ACA VA LA LISTA DE PELICULAS - SE CARGAN CON JAVASCRIPT -->
+        
+        </div>
+
     </section>
+
 
 
     <!-- Footer -->

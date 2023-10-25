@@ -14,14 +14,15 @@
 <body>
 
     <div class="header">
-        <div class="logo-block">
-            <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
-            <a href="index.html">
+        <a href="index.html">
+            <div class="logo-block">
+                <img src="imagenes/logo-blanco.png" alt="" width="44" height="42">
                 <h3 class="neonText animated">CineFilmToday</h3>
-            </a>
-        </div>
+            </div>
+        </a>
         <i id="mainmenu" class="menu ri-menu-5-line"></i>
     </div>
+
 
     <!-- MENU HAMBURGUESA -->
     <div class="menu-container">
@@ -41,28 +42,40 @@
     <!-- SOMBRA PARA MENU HAMBURGUESA -->
     <div class="menu-container-shadow"></div>
 
+    <section class="main-section">
 
-    <h4 class="subtitulo">Contáctenos</h4>
+        <h4 class="subtitulo">Contáctenos</h4>
+    
+        <div class="form-container">
+            <form action="#" id="myForm">
+          
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre..">
+          
+              <label for="email">Correo electrónico</label>
+              <input type="text" id="email" name="email" placeholder="Ingrese su dirección de correo..">
+          
+              <label for="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" placeholder="Ingrese su mensaje.." style="height:200px"></textarea>
+          
+              <input type="button" id="submit" value="Enviar">
+          
+            </form>
+        </div>
 
-    <div class="form-container">
-        <form action="#" id="myForm">
-      
-          <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre..">
-      
-          <label for="email">Correo electrónico</label>
-          <input type="text" id="email" name="email" placeholder="Ingrese su dirección de correo..">
-      
-          <label for="mensaje">Mensaje</label>
-          <textarea id="mensaje" name="mensaje" placeholder="Ingrese su mensaje.." style="height:200px"></textarea>
-      
-          <input type="button" id="submit" value="Enviar">
-      
-        </form>
-      </div>
+    </section>
+
+
+    <!-- Footer -->
+    <div class="footer">
+        Created by team 14. CaC 23523, python full stack. All rights reserved.2023
+    </div>
+
 
     <!-- JAVASCRIPT -->
     
+    <script src="assets/app.js"></script>
+
     <script>
         const validateEmail = (string) => {
             return string.match(
